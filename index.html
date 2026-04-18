@@ -205,6 +205,9 @@ button:hover {
 <div class="header">
   <h1>🥟 ADELLA DIMSUM</h1>
   <p>Fresh • Murah • Enak</p>
+
+  <p>📍 Jl. Contoh No.123, Jakarta</p>
+  <p>🕒 Buka: 10.00 - 22.00</p>
 </div>
 
 <div class="menu">
@@ -318,7 +321,7 @@ button:hover {
 <div class="card">
   <img src="images/pangsit.jpg">
   <div class="card-content">
-    <h3>PANGSIT</h3>
+    <h3>PANGSIT AYAM</h3>
 
     <select onchange="updatePrice(this)">
       <option value="23000">Isi 5 - Rp 23.000</option>
@@ -327,7 +330,7 @@ button:hover {
 
     <p class="price">Rp 23.000</p>
 
-    <button onclick="addToCart(this, 'PANGSIT')">
+    <button onclick="addToCart(this, 'PANGSIT AYAM')">
       + Pesan
     </button>
   </div>
@@ -399,35 +402,18 @@ function orderVarian(btn, menu) {
 
   <div id="list-review"></div>
 </div>
+<div style="text-align:center; margin-top:20px;">
+  <button onclick="loginAdmin()" style="background:black; font-size:12px;">
+    Admin
+  </button>
+</div>
 
 <script>
-function orderWA() {
-  if (cart.length === 0) {
-    alert("Keranjang masih kosong!");
-    return;
-  }
-
-  let nomor = "6283841614999"; // nomor kamu
-  let pesan = "Halo kak, saya mau order:\n\n";
-
-  let total = 0;
-
-  cart.forEach(item => {
-    pesan += `- ${item.menu} (${item.varian})\n`;
-    total += item.harga;
-  });
-
-  pesan += `\nTotal: Rp ${total.toLocaleString()}`;
-  pesan += "\nMohon info ongkir ya 🙏";
-
-  let url = "https://wa.me/" + nomor + "?text=" + encodeURIComponent(pesan);
-  window.open(url, "_blank");
-}
-</script>
-
-</body><script>
 let cart = [];
+let reviews = JSON.parse(localStorage.getItem("reviews")) || [];
+let isAdmin = false;
 
+// ================= CART =================
 function addToCart(btn, menu) {
   let card = btn.closest('.card');
   let select = card.querySelector('select');
@@ -444,6 +430,10 @@ function addToCart(btn, menu) {
   renderCart();
 }
 
+function orderVarian(btn, menu) {
+  addToCart(btn, menu);
+}
+
 function renderCart() {
   let list = document.getElementById("cart-list");
   let totalEl = document.getElementById("total");
@@ -451,9 +441,8 @@ function renderCart() {
   list.innerHTML = "";
   let total = 0;
 
-  cart.forEach((item, i) => {
+  cart.forEach(item => {
     total += item.harga;
-
     list.innerHTML += `
       <div>
         ${item.menu} (${item.varian}) - Rp ${item.harga.toLocaleString()}
@@ -464,7 +453,8 @@ function renderCart() {
   totalEl.innerText = "Rp " + total.toLocaleString();
 }
 
-function sendWA() {
+// ================= WHATSAPP =================
+function orderWA() {
   if (cart.length === 0) {
     alert("Keranjang masih kosong!");
     return;
@@ -485,12 +475,77 @@ function sendWA() {
   let url = "https://wa.me/" + nomor + "?text=" + encodeURIComponent(pesan);
   window.open(url, "_blank");
 }
+
+// ================= PRICE =================
 function updatePrice(select) {
   let card = select.closest('.card');
-  let price = select.options[select.selectedIndex].value;
+  let price = select.value;
 
   card.querySelector('.price').innerText =
     "Rp " + Number(price).toLocaleString();
 }
+
+// ================= REVIEW =================
+function kirimReview() {
+  let nama = document.getElementById("nama").value;
+  let rating = document.getElementById("rating").value;
+  let komentar = document.getElementById("komentar").value;
+
+  if (!nama || !komentar) {
+    alert("Isi dulu nama & komentar!");
+    return;
+  }
+
+  let kataKasar = ["anjing", "bodoh", "jelek"];
+  for (let kata of kataKasar) {
+    if (komentar.toLowerCase().includes(kata)) {
+      alert("Komentar tidak sopan!");
+      return;
+    }
+  }
+
+  reviews.push({ nama, rating, komentar });
+  localStorage.setItem("reviews", JSON.stringify(reviews));
+
+  renderReview();
+}
+
+function renderReview() {
+  let list = document.getElementById("list-review");
+  list.innerHTML = "";
+
+  reviews.forEach((r, i) => {
+    list.innerHTML += `
+      <div class="review-item">
+        <strong>${r.nama} - ⭐${r.rating}</strong>
+        <p>${r.komentar}</p>
+        ${isAdmin ? `<button onclick="hapusReview(${i})">❌ Hapus</button>` : ""}
+      </div>
+    `;
+  });
+}
+
+function hapusReview(i) {
+  reviews.splice(i, 1);
+  localStorage.setItem("reviews", JSON.stringify(reviews));
+  renderReview();
+}
+
+// ================= ADMIN =================
+function loginAdmin() {
+  let password = prompt("Masukkan password admin:");
+  if (password === "dwisyakira00") {
+    isAdmin = true;
+    alert("Login berhasil!");
+    renderReview();
+  } else {
+    alert("Password salah!");
+  }
+}
+
+// INIT
+renderCart();
+renderReview();
 </script>
+</body>
 </html>
