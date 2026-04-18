@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADELLA DIMSUM</title>
+
+<style>
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  background: #f8f8f8;
+}
+.card-content h3 {
+  min-height: 40px;
+}
+.cart {
+  background: white;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.price {
+  margin: 8px 0;
+}
+button {
+  margin-top: auto;
+}
+.cart {
+  background: white;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.card-content {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+}
+.card img {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.review-section {
+  padding: 15px;
+  background: #fff;
+}
+
+.review-form input,
+.review-form select,
+.review-form textarea {
+  width: 100%;
+  margin-bottom: 8px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.review-form textarea {
+  height: 70px;
+}
+
+.review-item {
+  background: #f9f9f9;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.review-item strong {
+  display: block;
+}
+.badge {
+  background: red;
+  color: white;
+  padding: 3px 6px;
+  font-size: 11px;
+  border-radius: 5px;
+}
+.card {
+  transition: all 0.3s ease;
+}
+select, .qty {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.info {
+  font-size: 13px;
+  color: #555;
+}
+
+/* HEADER */
+.header {
+  background: linear-gradient(90deg, #ff7a18, #ffb347);
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+.header h1 {
+  margin: 0;
+}
+
+.header p {
+  margin: 5px 0 0;
+  font-size: 14px;
+}
+
+
+
+
+/* MENU GRID */
+.menu {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 15px;
+  padding: 15px;
+}
+
+/* CARD */
+.card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.03);
+}
+
+/* IMAGE */
+.card img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+}
+
+/* CONTENT */
+.card-content {
+  padding: 10px;
+  text-align: left;
+}
+
+.card h3 {
+  margin: 5px 0;
+  font-size: 16px;
+}
+
+.price {
+  color: #27ae60;
+  font-weight: bold;
+}
+
+/* BUTTON */
+button {
+  width: 100%;
+  border: none;
+  padding: 10px;
+  background: #ff7a18;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  margin-top: 8px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #e66900;
+}
+
+/* FOOTER CTA */
+.footer {
+  position: sticky;
+  bottom: 0;
+  background: white;
+  padding: 10px;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+}
+
+.footer button {
+  background: #25D366;
+  font-size: 16px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+  <h1>🥟 ADELLA DIMSUM</h1>
+  <p>Fresh • Murah • Enak</p>
+</div>
+
+<div class="menu">
+
+  <div class="card">
+    <img src="images/baksomangkok.jpg">
+    <div class="card-content">
+      <span class="badge">🔥 Best Seller</span>
+      <h3>BAKSO MANGKOK</h3>
+
+      <select onchange="updatePrice(this)">
+      <option value="35000">1 PCS - Rp 35.000</option>
+      <option value="70000">2 PCS - Rp 70.000</option>
+    </select>
+
+    <p class="price">Rp 35.000</p>
+
+    <button onclick="orderVarian(this, 'BAKSO MANGKOK')">
+      + Pesan
+    </button>
+  </div>
+</div>
+
+  <div class="card">
+  <img src="images/dimsumayam.jpg">
+  <div class="card-content">
+    <h3>DIMSUM AYAM</h3>
+
+    <select onchange="updatePrice(this)">
+      <option value="12000">Isi 4 - Rp 12.000</option>
+      <option value="39000">Isi 15 - Rp 39.000</option>
+    </select>
+
+    <p class="price">Rp 12.000</p>
+
+    <button onclick="addToCart(this, 'DIMSUM AYAM')">
+      + Pesan
+    </button>
+  </div>
+</div>
+  <div class="card">
+  <img src="images/dimsummix.jpg">
+  <div class="card-content">
+    <h3>DIMSUM MIX</h3>
+
+    <select onchange="updatePrice(this)">
+      <option value="18000">Isi 4 - Rp 18.000</option>
+      <option value="45000">Isi 12 - Rp 45.000</option>
+    </select>
+
+    <p class="price">Rp 18.000</p>
+
+    <button onclick="addToCart(this, 'DIMSUM MIX')">
+      + Pesan
+    </button>
+  </div>
+</div>
+  <div class="card">
+  <img src="images/dimsumrumputlaut.jpg">
+  <div class="card-content">
+    <h3>DIMSUM RUMPUT LAUT</h3>
+
+    <select onchange="updatePrice(this)">
+      <option value="15000">Isi 4 - Rp 15.000</option>
+      <option value="40000">Isi 12 - Rp 40.000</option>
+    </select>
+
+    <p class="price">Rp 15.000</p>
+
+    <button onclick="addToCart(this, 'DIMSUM RUMPUT LAUT')">
+      + Pesan
+    </button>
+  </div>
+</div>
+
+<div class="card">
+  <img src="images/dimsummentai.jpg">
+  <div class="card-content">
+    <h3>DIMSUM MENTAI</h3>
+
+    <select onchange="updatePrice(this)">
+      <option value="18000">Isi 4 - Rp 18.000</option>
+      <option value="25000">Isi 6 - Rp 25.000</option>
+    </select>
+
+    <p class="price">Rp 18.000</p>
+
+    <button onclick="addToCart(this, 'DIMSUM MENTAI')">
+      + Pesan
+    </button>
+  </div>
+</div>
+<div class="card">
+  <img src="images/dimsumudang.jpg">
+  <div class="card-content">
+    <h3>DIMSUM UDANG</h3>
+
+    <select onchange="updatePrice(this)">
+      <option value="15000">Isi 4 - Rp 15.000</option>
+      <option value="40000">Isi 12 - Rp 40.000</option>
+    </select>
+
+    <p class="price">Rp 15.000</p>
+
+    <button onclick="addToCart(this, 'DIMSUM UDANG')">
+      + Pesan
+    </button>
+  </div>
+</div>
+
+<div class="card">
+  <img src="images/pangsit.jpg">
+  <div class="card-content">
+    <h3>PANGSIT</h3>
+
+    <select onchange="updatePrice(this)">
+      <option value="23000">Isi 5 - Rp 23.000</option>
+      <option value="45000">Isi 10 - Rp 45.000</option>
+    </select>
+
+    <p class="price">Rp 23.000</p>
+
+    <button onclick="addToCart(this, 'PANGSIT')">
+      + Pesan
+    </button>
+  </div>
+</div>
+
+<div class="card">
+  <img src="images/udangkeju.jpg">
+  <div class="card-content">
+    <span class="badge">🔥 Best Seller</span>
+    <h3>UDANG KEJU</h3>
+
+    <select onchange="updatePrice(this)">
+      <option value="12000">Isi 3 - Rp 12.000</option>
+      <option value="20000">Isi 5 - Rp 20.000</option>
+    </select>
+
+    <p class="price">Rp 12.000</p>
+
+    <button onclick="addToCart(this, 'UDANG KEJU')">
+      + Pesan
+    </button>
+  </div>
+</div>
+  <script>
+function orderVarian(btn, menu) {
+  let card = btn.closest('.card');
+  let select = card.querySelector('select');
+  let text = select.options[select.selectedIndex].text;
+  let harga = select.value;
+
+  cart.push({
+    menu: menu,
+    varian: text,
+    harga: parseInt(harga)
+  });
+
+  renderCart();
+}
+</script>
+</div>
+
+</div>
+<div class="cart">
+  <h3>🛒 Keranjang</h3>
+  <div id="cart-list"></div>
+  <p><strong>Total: <span id="total">Rp 0</span></strong></p>
+</div>
+
+<div class="footer">
+  <button onclick="orderWA()">📲 Order Sekarang via WhatsApp</button>
+</div><div class="review-section">
+  <h2>⭐ Ulasan Pelanggan</h2>
+
+  <div class="review-form">
+    <input type="text" id="nama" placeholder="Nama kamu">
+    
+    <select id="rating">
+      <option value="5">⭐⭐⭐⭐⭐ (5)</option>
+      <option value="4">⭐⭐⭐⭐ (4)</option>
+      <option value="3">⭐⭐⭐ (3)</option>
+      <option value="2">⭐⭐ (2)</option>
+      <option value="1">⭐ (1)</option>
+    </select>
+
+    <textarea id="komentar" placeholder="Tulis ulasan kamu..."></textarea>
+
+    <button onclick="kirimReview()">Kirim Ulasan</button>
+  </div>
+
+  <div id="list-review"></div>
+</div>
+
+<script>
+function orderWA() {
+  if (cart.length === 0) {
+    alert("Keranjang masih kosong!");
+    return;
+  }
+
+  let nomor = "6283841614999"; // nomor kamu
+  let pesan = "Halo kak, saya mau order:\n\n";
+
+  let total = 0;
+
+  cart.forEach(item => {
+    pesan += `- ${item.menu} (${item.varian})\n`;
+    total += item.harga;
+  });
+
+  pesan += `\nTotal: Rp ${total.toLocaleString()}`;
+  pesan += "\nMohon info ongkir ya 🙏";
+
+  let url = "https://wa.me/" + nomor + "?text=" + encodeURIComponent(pesan);
+  window.open(url, "_blank");
+}
+</script>
+
+</body><script>
+let cart = [];
+
+function addToCart(btn, menu) {
+  let card = btn.closest('.card');
+  let select = card.querySelector('select');
+
+  let text = select.options[select.selectedIndex].text;
+  let price = parseInt(select.value);
+
+  cart.push({
+    menu: menu,
+    varian: text,
+    harga: price
+  });
+
+  renderCart();
+}
+
+function renderCart() {
+  let list = document.getElementById("cart-list");
+  let totalEl = document.getElementById("total");
+
+  list.innerHTML = "";
+  let total = 0;
+
+  cart.forEach((item, i) => {
+    total += item.harga;
+
+    list.innerHTML += `
+      <div>
+        ${item.menu} (${item.varian}) - Rp ${item.harga.toLocaleString()}
+      </div>
+    `;
+  });
+
+  totalEl.innerText = "Rp " + total.toLocaleString();
+}
+
+function sendWA() {
+  if (cart.length === 0) {
+    alert("Keranjang masih kosong!");
+    return;
+  }
+
+  let nomor = "6283841614999";
+  let pesan = "Halo kak, saya mau order:\n\n";
+  let total = 0;
+
+  cart.forEach(item => {
+    pesan += `- ${item.menu} (${item.varian})\n`;
+    total += item.harga;
+  });
+
+  pesan += `\nTotal: Rp ${total.toLocaleString()}`;
+  pesan += "\nMohon info ongkir ya 🙏";
+
+  let url = "https://wa.me/" + nomor + "?text=" + encodeURIComponent(pesan);
+  window.open(url, "_blank");
+}
+function updatePrice(select) {
+  let card = select.closest('.card');
+  let price = select.options[select.selectedIndex].value;
+
+  card.querySelector('.price').innerText =
+    "Rp " + Number(price).toLocaleString();
+}
+</script>
+</html>
